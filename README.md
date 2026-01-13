@@ -1,14 +1,20 @@
-# Scope
+# CPP 3D Physics Engine
+
+A 3D Physics engine written in C++ for the purpose of learning how they work.
+
+## Scope
 - Develop a 3D physics engine with collisions, gravity, friction, restitution.
 - Render the scene with a basic renderer using OpenGL
 - Write the engine in C++
 
-# Initial System Design
+## Initial System Design
 - It will use an App / Core architecture
 - App contains application specific code and the main function
 - Core is remains constant regardless of the application and contains a renderer and physics solver
 
-# Dependencies
+<img src="Docs/Diagrams/system_diagram.svg" width = "800">
+
+## Dependencies
 - For WSL2
 
 ```
