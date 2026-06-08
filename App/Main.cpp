@@ -3,7 +3,6 @@
 #include "AxisTheoremScene.h"
 #include "CollisionResolutionDemoScene.h"
 #include "RandomSpheresColliding.h"
-#include "AeroSimScene.h"
 
 #include <memory>
 
@@ -25,7 +24,7 @@ int main()
 	sceneLayer->RegisterScene("BoxBox", []() { return std::make_unique<Talk::BoxBoxCollideScene>(); });
 	sceneLayer->RegisterScene("WorldsColliding", []() { return std::make_unique<Talk::RandomSpheresCollidingScene>(); });
 
-	sceneLayer->SetActiveScene("AxisTheoremScene");
+	sceneLayer->SetActiveScene("LinearMotionScene");
 
 	app.GetLayerStack().PushLayer(sceneLayer);
 

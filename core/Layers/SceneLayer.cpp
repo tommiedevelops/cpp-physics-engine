@@ -28,7 +28,6 @@ namespace PhysicsEngine
 
 	void SceneLayer::OnUpdate(float dt)
 	{
-		m_LastMousePosition = Input::GetMousePosition().value_or(glm::vec2(0, 0));
 		if (m_ActiveScene) m_ActiveScene->OnUpdate(dt);
 	}
 
