@@ -14,7 +14,7 @@
 
 namespace PhysicsEngine
 {
-
+	// Singleton for App
 	static App* s_Instance = nullptr;
 
 	static void EmscriptenMainLoop()
@@ -22,15 +22,17 @@ namespace PhysicsEngine
 		s_Instance->MainLoop();
 	}
 
+	App* App::GetInstance()
+	{
+		return s_Instance;
+	}
+
 	App::App(WindowProperties& windowProperties)
 		: m_Window{windowProperties}
 		, m_Assets{}
 		, m_GameTime{}
-		, m_LayerStack{}
 		, m_WindowProperties{windowProperties}
 	{
-		m_LayerStack.SetWindowRef(&m_Window);
-
 		m_Window.SetEventCallback(
 			[this](Event& e) { OnEvent(e); }
 		);
@@ -38,11 +40,20 @@ namespace PhysicsEngine
 		Input::Init(m_Window.GetNativeWindow());
 	}
 
-	
+	void App::Init(WindowProperties& windowProperties)
+	{
+		s_Instance = new App(windowProperties);
+	}
+
+	void App::PushLayer(std::shared_ptr<Layer> layer)
+	{
+		m_Layers.emplace_back(layer);
+		layer->OnAttach();
+	}
+
 	void App::OnEvent(Event& e)
 	{
-		auto& layers{ m_LayerStack.GetLayers() };
-		for (auto it = layers.rbegin(); it != layers.rend(); ++it)
+		for (auto it = m_Layers.rbegin(); it != m_Layers.rend(); ++it)
 		{
 			if (e.IsHandled()) break;
 			(*it)->OnEvent(e);
@@ -54,7 +65,7 @@ namespace PhysicsEngine
 			m_GameTime.Update();
 			m_Window.PollEvents();
 
-			for (auto layer : m_LayerStack.GetLayers())
+			for (const auto& layer : m_Layers)
 			{
 				layer->OnUpdate(m_GameTime.GetDeltaTime());
 				layer->OnRender();

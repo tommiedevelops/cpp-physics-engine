@@ -8,6 +8,7 @@
 #include "KeyEvent.h"
 #include "Input.h"
 #include "MouseEvent.h"
+#include "App.h"
 
 #include <iostream> // temp
 
@@ -23,8 +24,7 @@ namespace PhysicsEngine
 		ImGuiIO& io = ImGui::GetIO();
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
-		if (!m_Window) throw std::logic_error("Window was null");
-		auto window{ m_Window->GetNativeWindow() };
+		auto window{ App::GetInstance()->GetWindow()->GetNativeWindow()};
 
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init();

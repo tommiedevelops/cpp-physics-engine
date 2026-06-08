@@ -4,38 +4,58 @@
 #include "Scene.h"
 #include "AssetManager.h"
 #include "GameTime.h"
-#include "LayerStack.h"
+#include "Layer.h"
 
 namespace PhysicsEngine
 {
+	using Layers = std::vector<std::shared_ptr<Layer>>;
+
 	class App
 	{
 	public:
-		App(WindowProperties& windowProperties);
+		static void Init(WindowProperties& windowProperties);
+		static App* GetInstance();
+
 		void Run();
 		void OnEvent(Event& e);
+
+		Window* GetWindow()
+		{
+			return &m_Window;
+		}
+
+		// no copies and moves
+		App(const App&) = delete;
+		App& operator=(const App&) = delete;
 
 		AssetManager* GetAssetsRef()
 		{
 			return &m_Assets;
 		}
 
+		void PushLayer(std::shared_ptr<Layer> layer);
+
 		template <typename T>
-		T& GetLayer()
+		T* GetLayer()
 		{
-			return m_LayerStack.GetLayer<T>();
-		}
+			static_assert(std::derived_from<T, Layer>, "T must derive from Layer");
 
-		LayerStack& GetLayerStack()
-		{
-			return m_LayerStack;
-		}
+			for (const auto& layer : m_Layers)
+			{
+				if (T* result = dynamic_cast<T*>(layer.get()))
+					return result;
+			}
 
+			return nullptr;
+		}
+		
 		void MainLoop();
 	private:
+
+		App(WindowProperties& windowProperties);
+		Layers  			 m_Layers;
 		Window               m_Window;
 		WindowProperties&    m_WindowProperties;
-		LayerStack           m_LayerStack;
 		AssetManager         m_Assets;
 		GameTime             m_GameTime;
 	};

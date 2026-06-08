@@ -13,7 +13,6 @@ add_subdirectory(external/imgui)
 add_library(core
 	Core/Application/App.cpp
 	
-	Core/Layers/LayerStack.cpp
 	Core/Layers/SceneLayer.cpp
 	Core/Layers/GlobalOverlayLayer.cpp
 

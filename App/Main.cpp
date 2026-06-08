@@ -11,10 +11,11 @@ int main()
 	using namespace PhysicsEngine;
 
 	WindowProperties props{};
-	App app{ props };
+	App::Init(props);
+	App* app = App::GetInstance();
 
 	auto sceneLayer = std::make_shared<SceneLayer>();
-	sceneLayer->SetAssetsRef(app.GetAssetsRef());
+	sceneLayer->SetAssetsRef(app->GetAssetsRef());
 
 	sceneLayer->RegisterScene("LinearMotionScene", []() { return std::make_unique<Talk::LinearMotionDemoScene>(); });
 	sceneLayer->RegisterScene("AxisTheoremScene", []() { return std::make_unique<Talk::AxisTheoremScene>(); });
@@ -26,11 +27,11 @@ int main()
 
 	sceneLayer->SetActiveScene("LinearMotionScene");
 
-	app.GetLayerStack().PushLayer(sceneLayer);
+	app->PushLayer(sceneLayer);
 
 	auto globalOverlay = std::make_shared<GlobalOverlayLayer>(sceneLayer);
-	app.GetLayerStack().PushLayer(globalOverlay);
+	app->PushLayer(globalOverlay);
 
-	app.Run();
+	app->Run();
 	return 0;
 }

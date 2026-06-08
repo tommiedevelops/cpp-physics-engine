@@ -16,7 +16,6 @@ namespace PhysicsEngine
 		virtual void OnRender() = 0;
 		virtual void OnEvent(Event& e) = 0;
 	protected:
-		Window* m_Window;
-		friend class LayerStack;
+		friend class Application;
 	};
 }
