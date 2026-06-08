@@ -45,11 +45,12 @@ namespace PhysicsEngine
 	private:
 		App(WindowProperties& windowProperties);
 
+		static App* s_Instance;
+
 		Layers  			 m_Layers;
 		Window               m_Window;
 		WindowProperties&    m_WindowProperties;
 		AssetManager         m_Assets;
 		GameTime             m_GameTime;
-
 	};
 }

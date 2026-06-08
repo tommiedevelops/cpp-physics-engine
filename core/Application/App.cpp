@@ -15,12 +15,7 @@
 namespace PhysicsEngine
 {
 	// Singleton for App
-	static App* s_Instance = nullptr;
-
-	static void EmscriptenMainLoop()
-	{
-		s_Instance->MainLoop();
-	}
+	App* App::s_Instance = nullptr;
 
 	App* App::GetInstance()
 	{
@@ -74,11 +69,18 @@ namespace PhysicsEngine
 			m_Window.SwapBuffers();
 	}
 
+
+#ifdef __EMSCRIPTEN__
+	static void EmscriptenMainLoop()
+	{
+		App::GetInstance()->MainLoop();
+	}
+#endif
+
 	void App::Run()
 	{
-		s_Instance = this;
-		
 #ifdef __EMSCRIPTEN__
+
 		emscripten_set_main_loop(EmscriptenMainLoop, 0, 1);
 		emscripten_hide_mouse();
 #else
